@@ -158,7 +158,7 @@ try {
       $app->di->setShared(
         'omi',
         function () use($app) {
-          if (!$app->request->isGet() || !$app->request->hasQuery('omi') || empty($app->request->hasQuery('omi'))) {
+          if (!$app->request->hasQuery('omi') || empty($app->request->hasQuery('omi'))) {
             return false;
           }
 
