@@ -163,6 +163,15 @@ class NotesController extends ControllerBase
       throw new AppException(AppException::EMSG_DELETE_NOTES);
     }
 
+    $noteTagLkps = NoteTagLkp::find([
+      'note_id = :note_id:',
+      'bind' => ['note_id' => $id]
+    ]);
+
+    foreach($noteTagLkps as $noteTagLkp) {
+      $noteTagLkp->delete();
+    }
+
     $note->delete();
 
     return null;
