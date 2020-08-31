@@ -1,0 +1,4 @@
+dbv/data/meta/revision
+vendor/*
+composer.lock
+/app/logs/*.log
