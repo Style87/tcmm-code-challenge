@@ -76,7 +76,15 @@ class NotesController extends ControllerBase
       }
     }
 
-    return $note;
+    $builder = $this->modelsManager->createBuilder()
+      ->from('App\Models\Notes');
+      $builder = Notes::getBuilder($builder);
+      $builder
+        ->where('App\Models\Notes.id = :id:', ['id' => $note->getId()])
+        ->limit(1)
+        ->offset(0);
+
+      return $builder;
   }
 
   /**
