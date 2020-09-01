@@ -1,0 +1,60 @@
+version: '3.7'
+
+services:
+
+  mysql:
+    restart: always
+    image: mysql:5.7.25
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - ./config/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./docker/mysql/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    env_file:
+      - ./config/mysql/variables.env
+
+
+  webserver:
+    restart: unless-stopped
+    image: nginx:latest
+    container_name: webserver
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./code/api:/var/www/html
+      - ./config/nginx/to-do.conf:/etc/nginx/conf.d/to-do.conf
+      - ./config/nginx/to-do.conf:/etc/nginx/sites-available/to-do.conf
+      - ./config/nginx/to-do.conf:/etc/nginx/sites-enabled/to-do.conf
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    depends_on:
+      - php
+      - todo
+
+  php:
+    restart: always
+    build: ./docker/php
+    image: phalconphp/php-fpm:7.2-min
+    container_name: php
+    working_dir: /var/www/html
+    ports:
+      - "9000:9000"
+    volumes:
+        - ./code/api:/var/www/html
+    env_file:
+    - ./config/php/php-variables.env
+    depends_on:
+      - mysql
+
+  todo:
+    build: ./code/todo
+    image: nodejs
+    container_name: nodejs
+    ports:
+      - "8080:8080"
+      - "35729:35729"
+    restart: unless-stopped
+    command: "/bin/sh -c 'npm install && npm run dev'"

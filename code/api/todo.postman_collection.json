@@ -1,0 +1,618 @@
+{
+	"info": {
+		"_postman_id": "00117a49-e7b4-4cc5-9cdc-33aaaf4df6ee",
+		"name": "Todo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Notes",
+			"item": [
+				{
+					"name": "/notes/:id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4707cb0f-bec3-4bd2-8c58-2f6750452e08",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6ff528e-c371-4f9b-ba17-5cb089d73430",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"if (data.id) {",
+									"    postman.setEnvironmentVariable(\"noteId\", data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/notes/{{noteId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"notes",
+								"{{noteId}}"
+							]
+						},
+						"description": "Gets a note by id.\n\n@throws AppException::EMSG_INCORRECT_INPUT\n\n@throws AppException::EMSG_GET_NOTES\n\n@return Notes"
+					},
+					"response": []
+				},
+				{
+					"name": "/notes",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "bb623988-c1e4-4b28-8366-facce8835823",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "cb211942-f75a-4f10-8514-b2c4a20b9053",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/notes?omi=Notes().relation(Tags())",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"notes"
+							],
+							"query": [
+								{
+									"key": "omi",
+									"value": "Notes().relation(Tags())"
+								}
+							]
+						},
+						"description": "Gets a note or notes.\n\n@throws AppException::EMSG_GET_NOTES\n\n@return Notes|Array&lt;Notes&gt;"
+					},
+					"response": []
+				},
+				{
+					"name": "/notes",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b6026d92-7ae9-4529-a7f7-374f2b6b865f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c963743-5a98-47f5-9534-d0039e7333e5",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"if (data.id) {",
+									"    postman.setEnvironmentVariable(\"noteId\", data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "{{$guid}}",
+									"description": "[String] (Required) The note title.",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "{{$guid}}",
+									"description": "[String] (Required) The note description",
+									"type": "text"
+								},
+								{
+									"key": "tag_ids",
+									"value": "1,2",
+									"description": "[String] (Required) A comma separated string of tag ids.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/notes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"notes"
+							]
+						},
+						"description": "Creates a note.\n\n@throws AppException::EMSG_INCORRECT_INPUT\n\n@throws AppException::EMSG_POST_NOTES\n\n@return Notes"
+					},
+					"response": []
+				},
+				{
+					"name": "/notes/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1faf0055-735a-4e76-b5d6-6245aa6da29a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "{{$guid}}",
+									"description": "[String] (Optional, Default: Original value) The notes title.",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "{{$guid}}",
+									"description": "[String] (Optional, Default: Original value) The notes description.",
+									"type": "text"
+								},
+								{
+									"key": "hashes",
+									"value": "1,2",
+									"description": "[String] (Optional, Default: Original value) A comma separated string of hashtags.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/notes/{{noteId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"notes",
+								"{{noteId}}"
+							]
+						},
+						"description": "Updates a note.\n\n@throws AppException::EMSG_PUT_NOTES\n\n@return Notes"
+					},
+					"response": []
+				},
+				{
+					"name": "/notes/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "163f9a0e-40a0-4f21-953b-afbe23a77534",
+								"exec": [
+									"if (pm.response.code == 204) {",
+									"    postman.setEnvironmentVariable(\"noteId\", null);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/notes/{{noteId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"notes",
+								"{{noteId}}"
+							]
+						},
+						"description": "Deletes a note.\n\n@throws AppException::EMSG_DELETE_NOTES\n\n@return null"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5ee000f6-6818-45db-8033-0b8d9e7e8090",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "007bceb2-947b-4470-8dbd-6cd33cc63269",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "/tags/:id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "07e770e9-3d06-4af9-9e7c-b2dc83b3ecac",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "20804532-d8b7-4a78-9e23-a3b01e03de71",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"if (data.id) {",
+									"    postman.setEnvironmentVariable(\"tagId\", data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/tags/{{tagId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tags",
+								"{{tagId}}"
+							]
+						},
+						"description": "Gets a tag by id.\n\n@throws AppException::EMSG_GET_TAGS\n\n@return Tags"
+					},
+					"response": []
+				},
+				{
+					"name": "/tags",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b6b40bf9-d2ee-4983-b335-d625f2920705",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "53d5ae5a-84cd-4031-9f8b-a4ad1f3a1541",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/tags",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tags"
+							]
+						},
+						"description": "Gets a tag or tags.\n\n@throws AppException::EMSG_GET_TAGS\n\n@return Tags|Array&lt;Tags&gt;"
+					},
+					"response": []
+				},
+				{
+					"name": "/tags",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c9f22281-8549-4f2a-88c0-c63b5a077e24",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "766ed7ae-d0ba-4f5d-b2a8-473b10dc4a6b",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"if (data.id) {",
+									"    postman.setEnvironmentVariable(\"tagId\", data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "tag_name",
+									"value": "{{$guid}}",
+									"description": "[String] (Required) The tag name.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/tags",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tags"
+							]
+						},
+						"description": "Creates a tag.\n\n@throws AppException::EMSG_INCORRECT_INPUT\n\n@throws AppException::EMSG_POST_TAGS\n\n@return Tags"
+					},
+					"response": []
+				},
+				{
+					"name": "/tags/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "38409aee-ac80-46a7-9616-40570b27e5fd",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "tag_name",
+									"value": "{{$guid}}",
+									"description": "[String] (Optional, Default: Original value) The tag name.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/tags/{{tagId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tags",
+								"{{tagId}}"
+							]
+						},
+						"description": "Updates a tag.\n\n@throws AppException::EMSG_PUT_TAGS\n\n@return Tags"
+					},
+					"response": []
+				},
+				{
+					"name": "/tags/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "197a7287-4a2a-466b-99a6-f3c51b001bd5",
+								"exec": [
+									"if (pm.response.code == 204) {",
+									"    postman.setEnvironmentVariable(\"tagId\", null);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/tags/{{tagId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"tags",
+								"{{tagId}}"
+							]
+						},
+						"description": "Deletes a tag.\n\n@throws AppException::EMSG_DELETE_TAGS\n\n@return null"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7828ad04-2774-4569-9f27-3e6c09688c30",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "170451d8-11a0-489e-bcd3-701777a630a1",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
