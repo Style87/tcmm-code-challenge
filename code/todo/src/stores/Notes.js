@@ -1,12 +1,24 @@
 import { writable } from 'svelte/store';
 
-export function initialValue() {
+function initialValue() {
   return {
     notes: [],
   }
 }
 
-export function makeNotesStore(args) {
+function createStore() {
+  let initial = initialValue();
+  const { subscribe, set, update } = writable(initial, makeSubscribe(initial, {}));
+
+  return {
+    subscribe,
+    update,
+    set,
+    fetch: () => makeSubscribe(initialValue())
+    };
+}
+
+function makeNotesStore(args) {
   // 1. Build the store and initialize it as empty and error free
   let initial = initialValue();
   let store = writable(initial, makeSubscribe(initial, args));
@@ -23,7 +35,7 @@ export function makeNotesStore(args) {
     return set => {
       // 3. This won't get executed until the store has
       // its first subscriber. Kick off retrieval.
-      fetchData(data, set);
+      fetchNotes(data, set);
 
       // 4. We're not waiting for the response.
       // Return the unsubscribe function which doesn't do
@@ -32,9 +44,9 @@ export function makeNotesStore(args) {
     };
   }
 
-  async function fetchData(data, set) {
+  export async function fetchNotes(data, set) {
     try {
-      // 5. Dispatch the request for the users
+      // 5. Dispatch the request for the notes
       const withQuery = (url, params) => {
         let query = Object.keys(params)
           .filter(k => params[k] !== undefined)
@@ -76,3 +88,7 @@ export function makeNotesStore(args) {
       set(data);
     }
   }
+
+  const notesStore = makeNotesStore();
+
+  export {notesStore, makeNotesStore};
