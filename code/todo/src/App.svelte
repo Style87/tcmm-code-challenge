@@ -1,6 +1,6 @@
 <script>
-  import NotesPane from './panes/NotesPane.svelte';
-  import TagsPane from './panes/TagsPane.svelte';
+  import NotesPane from './components/panes/NotesPane.svelte';
+  import TagsPane from './components/panes/TagsPane.svelte';
 </script>
 
 <style>
