@@ -5,15 +5,12 @@
 </style>
 <script>
 import { onDestroy } from 'svelte';
-import { store } from '../stores/Tags.js';
+import { tagsStore } from '../stores/Tags.js';
+import { notesStore } from '../stores/Notes.js';
 import Tag from '../Tag.svelte';
 
 let tags = [];
 let unsubscribe;
-
-// Empty store exists - but fetches don't happen
-// until subscription and we are not using
-// auto-subscription here.
 
 onDestroy(() => {
   if(unsubscribe) {
@@ -23,11 +20,10 @@ onDestroy(() => {
 });
 
 function updateTags(data) {
-  // trigger component reactivity
   tags = data;
 }
 
-unsubscribe = store.subscribe(updateTags);
+unsubscribe = tagsStore.subscribe(updateTags);
 
 function onAddTag(event) {
   let data = new FormData();
@@ -49,7 +45,7 @@ function onAddTag(event) {
     }
   })
   .then(data => {
-      store.update((store) => {
+      tagsStore.update((store) => {
         store.tags.push(data);
         return store;
       });
@@ -75,9 +71,46 @@ function deleteTag(event) {
     }
   })
   .then(data => {
-    store.update((store) => {
+    // Update the UI
+    document.getElementById('tag_name').value = '';
+
+    // Update the tags store
+    tagsStore.update((store) => {
       store.tags = store.tags.filter(( tag ) => tag.id !== event.detail.id);
       return store;
+    });
+
+    // Update the notes store
+    const withQuery = (url, params) => {
+      let query = Object.keys(params)
+        .filter(k => params[k] !== undefined)
+        .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+        .join('&');
+      url += (url.indexOf('?') === -1 ? '?' : '&') + query;
+      return url;
+    };
+
+    var params = {"omi":"Notes().order(created_timestamp,DESC).relation(Tags())"};
+
+    fetch(withQuery('/api/notes', params), {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        const text = response.text();
+        throw new Error(text);
+      }
+    })
+    .then(data => {
+      notesStore.update((store) => {
+        store.notes = data;
+        return store;
+      });
     });
   })
 }

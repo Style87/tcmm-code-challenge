@@ -76,6 +76,6 @@ async function fetchData(data, set) {
   }
 }
 
-const store = makeTagsStore();
+const tagsStore = makeTagsStore();
 
-export {store};
+export {tagsStore};
