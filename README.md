@@ -27,5 +27,5 @@ Clone the repository at the desired location on your machine.
 
 #### Linux
 * Navigate to the project directory and run `docker-compose up -d webserver`.
-* Execute `docker exec -it php task "database run update"`
+* Execute `docker exec -it php task database run update`
 * Access the site by navigating to `localhost` or `127.0.0.1` in a web browser.
