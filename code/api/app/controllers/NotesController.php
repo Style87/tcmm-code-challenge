@@ -76,7 +76,15 @@ class NotesController extends ControllerBase
       }
     }
 
-    return $note;
+    $builder = $this->modelsManager->createBuilder()
+      ->from('App\Models\Notes');
+      $builder = Notes::getBuilder($builder);
+      $builder
+        ->where('App\Models\Notes.id = :id:', ['id' => $note->getId()])
+        ->limit(1)
+        ->offset(0);
+
+      return $builder;
   }
 
   /**
@@ -153,6 +161,15 @@ class NotesController extends ControllerBase
 
     if ($note === false) {
       throw new AppException(AppException::EMSG_DELETE_NOTES);
+    }
+
+    $noteTagLkps = NoteTagLkp::find([
+      'note_id = :note_id:',
+      'bind' => ['note_id' => $id]
+    ]);
+
+    foreach($noteTagLkps as $noteTagLkp) {
+      $noteTagLkp->delete();
     }
 
     $note->delete();
