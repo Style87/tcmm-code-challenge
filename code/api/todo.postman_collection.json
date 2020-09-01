@@ -150,38 +150,30 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "title",
-									"value": "{{$guid}}",
-									"description": "[String] (Required) The note title.",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "{{$guid}}",
-									"description": "[String] (Required) The note description",
-									"type": "text"
-								},
-								{
-									"key": "tag_ids",
-									"value": "1,2",
-									"description": "[String] (Required) A comma separated string of tag ids.",
-									"type": "text"
-								}
-							]
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{$guid}}\",\r\n    \"description\":\"{{$guid}}\",\r\n    \"tag_ids\": [4,13]\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/notes",
+							"raw": "{{url}}/notes?omi=Notes().relation(Tags())",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"notes"
+							],
+							"query": [
+								{
+									"key": "omi",
+									"value": "Notes().relation(Tags())"
+								}
 							]
 						},
 						"description": "Creates a note.\n\n@throws AppException::EMSG_INCORRECT_INPUT\n\n@throws AppException::EMSG_POST_NOTES\n\n@return Notes"
