@@ -60,8 +60,7 @@ class NotesController extends ControllerBase
       throw new AppException( AppException::EMSG_POST_NOTES, $error );
     }
 
-    $tag_id_array = explode(',', $tag_ids);
-    foreach ($tag_id_array as $tag_id) {
+    foreach ($tag_ids as $tag_id) {
       $note_tag_lkp = new NoteTagLkp();
       $note_tag_lkp->note_id = $note->getId();
       $note_tag_lkp->tag_id = $tag_id;
